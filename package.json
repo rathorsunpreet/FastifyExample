@@ -20,6 +20,10 @@
   ],
   "author": "Sunpreet Singh Rathor",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rathorsunpreet/FastifyExample.git"
+  },
   "dependencies": {
     "@fastify/one-line-logger": "^1.2.0",
     "dotenv-safe": "^8.2.0",
