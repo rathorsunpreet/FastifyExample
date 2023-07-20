@@ -1,0 +1,2 @@
+1. Check if db exists in controller.js
+2. Add functioncality for lowdb.
