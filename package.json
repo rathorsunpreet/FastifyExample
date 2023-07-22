@@ -26,9 +26,11 @@
   },
   "dependencies": {
     "@fastify/one-line-logger": "^1.2.0",
+    "bcrypt": "^5.1.0",
     "dotenv-safe": "^8.2.0",
     "fastify": "^4.19.2",
     "http-status-codes": "^2.2.0",
+    "json5": "^2.2.3",
     "lowdb": "^6.0.1",
     "mongoose": "^7.4.0"
   },
