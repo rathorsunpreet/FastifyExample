@@ -4,7 +4,7 @@ import {
   getReasonPhrase,
   getStatusCode,
 } from 'http-status-codes';
-import * as Schemas from '../helpers/dbConnector.js';
+import * as Schemas from '../helpers/dbconnector.js';
 
 const homePage = async (req, reply) => {
   reply.send({ hello: 'world' });

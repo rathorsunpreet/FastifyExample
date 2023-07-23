@@ -1,28 +1,18 @@
 import mongoose from 'mongoose';
-import JSON5 from 'json5';
-import { readFileSync } from 'fs';
-import * as url from 'url';
+import * as localDB from './localdb.js';
 import User from '../schemas/users.js';
 
-let dbData = '';
-
-try {
-  const dbPath = url.fileURLToPath(new URL('../db/data.json', import.meta.url));
-  dbData = JSON5.parse(readFileSync(dbPath, 'utf8'));
-} catch (err) {
-  console.error(err);
-}
-// console.log(dbData);
-
+// Host: 127.0.0.1
+// Port: 27107
 mongoose.connect('mongodb://127.0.0.1:27017/test')
+  .then(() => {
+    console.log('Connecting to MongoDB!');
+  })
   .catch((error) => {
-    throw error;
+    console.error('Error connecting to MongoDB');
+    console.error('Switching to local DB');
+    // throw error;
   });
-
-// Handle error after connection
-mongoose.connection.on('error', (err) => {
-  throw err;
-});
 
 // Populate DB if collection count is zero
 mongoose.connection.on('connected', () => {
@@ -31,7 +21,7 @@ mongoose.connection.on('connected', () => {
       if (count === 0) {
         console.log('No Documents Found!');
         console.log('Adding from local db file!');
-        User.insertMany(dbData);
+        User.insertMany(localDB.dbData);
       }
     })
     .catch((err) => {

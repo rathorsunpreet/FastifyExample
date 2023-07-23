@@ -1,5 +1,3 @@
 1. Check if collection exists in dbConnector.js
-2. Add functioncality for lowdb.
-3. Create new JSON file with datasets in helper directory.
 
 User info generated using: https://randomuser.me/ and https://www.fakepersongenerator.com/
