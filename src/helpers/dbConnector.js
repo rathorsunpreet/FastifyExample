@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as localDB from './localdb.js';
+import { dbData } from './dboperator.js';
 import User from '../schemas/users.js';
 
 // Host: 127.0.0.1
@@ -10,6 +10,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB');
+    console.error(error);
     console.error('Switching to local DB');
     // throw error;
   });
@@ -21,7 +22,7 @@ mongoose.connection.on('connected', () => {
       if (count === 0) {
         console.log('No Documents Found!');
         console.log('Adding from local db file!');
-        User.insertMany(localDB.dbData);
+        User.insertMany(dbData);
       }
     })
     .catch((err) => {
