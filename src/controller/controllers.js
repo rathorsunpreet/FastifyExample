@@ -4,16 +4,12 @@ import {
   getReasonPhrase,
   getStatusCode,
 } from 'http-status-codes';
-import * as Schemas from '../helpers/dbconnector.js';
-
-const homePage = async (req, reply) => {
-  reply.send({ hello: 'world' });
-};
+import User from '../schemas/users.js';
 
 const getUser = async (req, reply) => {
   const user = req.params.username;
   try {
-    const res = await Schemas.User.find({ username: user }).exec();
+    const res = await User.find({ username: user }).exec();
     return res;
   } catch (err) {
     console.error(err);
@@ -23,7 +19,7 @@ const getUser = async (req, reply) => {
 
 const addUser = async (req, reply) => {
   try {
-    const body = new Schemas.User(req.body);
+    const body = new User(req.body);
     const newUser = await body.save();
     return newUser;
   } catch (err) {
@@ -35,7 +31,7 @@ const addUser = async (req, reply) => {
 const updateUser = async (req, reply) => {
   try {
     const name = req.params.username;
-    const res = await Schemas.User.updateOne({ username: name }, req.body);
+    const res = await User.updateOne({ username: name }, req.body);
     return res;
   } catch (err) {
     console.error(err);
@@ -46,7 +42,7 @@ const updateUser = async (req, reply) => {
 const deleteUser = async (req, reply) => {
   try {
     const name = req.params.username;
-    const res = await Schemas.User.deleteOne({ username: name });
+    const res = await User.deleteOne({ username: name });
     return ({ msg: `${name} account deleted!` });
   } catch (err) {
     console.error(err);
@@ -55,7 +51,6 @@ const deleteUser = async (req, reply) => {
 };
 
 export {
-  homePage,
   getUser,
   addUser,
   updateUser,

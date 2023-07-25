@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import routes from './src/routes/routes.js';
+import routeObj from './src/routes/aggregator.js';
 
 const fastify = Fastify({
   logger: {
@@ -9,7 +9,11 @@ const fastify = Fastify({
   },
 });
 
-routes.forEach((rte, index) => {
+fastify.get('/', (req, reply) => {
+  reply.send({ hello: 'world' });
+});
+
+routeObj.routes.forEach((rte, index) => {
   fastify.route(rte);
 });
 

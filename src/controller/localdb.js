@@ -1,15 +1,23 @@
 import {
+  ReasonPhrases,
+  StatusCodes,
+  getReasonPhrase,
+  getStatusCode,
+} from 'http-status-codes';
+import {
   dbData,
   saveDB,
-} from './dboperator.js';
+} from '../helpers/dboperator.js';
 
-function addUser(user) {
+const addUser = async (req, reply) => {
+  const user = req.body;
   dbData.push(user);
   saveDB();
   return user;
 }
 
-function getUser(username) {
+const getUser = async (req, reply) => {
+  const username = req.params.username;
   const user = dbData.filter((item) => item.username.localeCompare(username) === 0);
   if (user.length !== 0) {
     return user[0];
@@ -17,7 +25,8 @@ function getUser(username) {
   return '';
 }
 
-function deleteUser(username) {
+const deleteUser = async (req, reply) => {
+  const username = req.params.username;
   const user = getUser(username);
   if (user !== '') {
     const index = dbData.indexOf(user);
@@ -28,7 +37,9 @@ function deleteUser(username) {
   return '';
 }
 
-function updateUser(username, body) {
+const updateUser = async (req, reply) => {
+  const username = req.params.username;
+  const body = req.body;
   const user = deleteUser(username);
   if (user !== '') {
     Object.keys(user).forEach((key) => {

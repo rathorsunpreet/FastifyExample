@@ -2,18 +2,9 @@ import mongoose from 'mongoose';
 import { dbData } from './dboperator.js';
 import User from '../schemas/users.js';
 
-// Host: 127.0.0.1
-// Port: 27107
-mongoose.connect('mongodb://127.0.0.1:27017/test')
-  .then(() => {
-    console.log('Connecting to MongoDB!');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB');
-    console.error(error);
-    console.error('Switching to local DB');
-    // throw error;
-  });
+const dbState = {
+  val: true,
+};
 
 // Populate DB if collection count is zero
 mongoose.connection.on('connected', () => {
@@ -30,6 +21,26 @@ mongoose.connection.on('connected', () => {
     });
 });
 
-export {
-  User,
-};
+mongoose.connection.on('disconnected', () => {
+  console.log('DB Disconnected!');
+  dbState.val = false;
+});
+
+mongoose.connection.on('disconnecting', () => {
+  console.log('DB Disconnecting!');
+  dbState.val = false;
+});
+
+// Host: 127.0.0.1
+// Port: 27107
+mongoose.connect('mongodb://127.10.0.1:27017/test')
+  .catch((error) => {
+    console.error('Error connecting to MongoDB');
+    console.error(error);
+    console.error('Switching to local DB');
+    // throw error;
+  });
+
+
+
+export default dbState;

@@ -1,11 +1,6 @@
 import * as Controller from '../controller/controllers.js';
 
-const routes = [
-  {
-    method: 'GET',
-    url: '/',
-    handler: Controller.homePage,
-  },
+const dbroutes = [
   {
     method: 'GET',
     url: '/users/:username',
@@ -28,4 +23,4 @@ const routes = [
   },
 ];
 
-export default routes;
+export default dbroutes;

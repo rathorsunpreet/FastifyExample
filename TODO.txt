@@ -1,3 +1,4 @@
 1. Check if collection exists in dbConnector.js
+2. executing /users/oscar_jones yields no result.
 
 User info generated using: https://randomuser.me/ and https://www.fakepersongenerator.com/
