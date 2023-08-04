@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import routeObj from './src/routes/aggregator.js';
+import dbroutes from './src/routes/dbroutes.js';
 
 const fastify = Fastify({
   logger: {
@@ -13,7 +13,7 @@ fastify.get('/', (req, reply) => {
   reply.send({ hello: 'world' });
 });
 
-routeObj.routes.forEach((rte, index) => {
+dbroutes.forEach((rte, index) => {
   fastify.route(rte);
 });
 

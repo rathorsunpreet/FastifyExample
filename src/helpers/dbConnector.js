@@ -2,10 +2,6 @@ import mongoose from 'mongoose';
 import { dbData } from './dboperator.js';
 import User from '../schemas/users.js';
 
-const dbState = {
-  val: true,
-};
-
 // Populate DB if collection count is zero
 mongoose.connection.on('connected', () => {
   User.estimatedDocumentCount()
@@ -21,26 +17,17 @@ mongoose.connection.on('connected', () => {
     });
 });
 
-mongoose.connection.on('disconnected', () => {
-  console.log('DB Disconnected!');
-  dbState.val = false;
-});
-
-mongoose.connection.on('disconnecting', () => {
-  console.log('DB Disconnecting!');
-  dbState.val = false;
-});
+// console.log(mongoose);
 
 // Host: 127.0.0.1
 // Port: 27107
-mongoose.connect('mongodb://127.10.0.1:27017/test')
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+  .then(() => {
+    console.log('Connected to MongoDB!');
+  })
   .catch((error) => {
     console.error('Error connecting to MongoDB');
-    console.error(error);
-    console.error('Switching to local DB');
-    // throw error;
+    throw error;
   });
 
-
-
-export default dbState;
+export default mongoose;

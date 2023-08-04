@@ -1,4 +1,5 @@
 1. Check if collection exists in dbConnector.js
-2. executing /users/oscar_jones yields no result.
+2. Mongoose connect uses option, useUnifiedTopology. This sets serverTimeoutMS to 30,000ms.
+So, either set that lower or have the application wait 30s and then switch routes.
 
 User info generated using: https://randomuser.me/ and https://www.fakepersongenerator.com/

@@ -5,11 +5,12 @@ import {
   getStatusCode,
 } from 'http-status-codes';
 import User from '../schemas/users.js';
+import mongoose from '../helpers/dbconnector.js';
 
 const getUser = async (req, reply) => {
-  const user = req.params.username;
+  const usrname = req.params.username;
   try {
-    const res = await User.find({ username: user }).exec();
+    const res = await User.find({ username: usrname }).exec();
     return res;
   } catch (err) {
     console.error(err);
