@@ -5,50 +5,81 @@ import {
   getStatusCode,
 } from 'http-status-codes';
 import User from '../schemas/users.js';
-import mongoose from '../helpers/dbconnector.js';
+import '../helpers/dbconnector.js';
 
 const getUser = async (req, reply) => {
   const usrname = req.params.username;
   try {
     const res = await User.find({ username: usrname }).exec();
-    return res;
+    if (res.length !== 0) {
+      return reply
+        .status(StatusCodes.OK)
+        .send(res);
+    }
   } catch (err) {
-    console.error(err);
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
   }
-  return '';
+  return reply
+    .status(StatusCodes.NOT_FOUND)
+    .send({
+      error: getReasonPhrase(StatusCodes.NOT_FOUND),
+    });
 };
 
 const addUser = async (req, reply) => {
+  const body = new User(req.body);
   try {
-    const body = new User(req.body);
     const newUser = await body.save();
-    return newUser;
+    return reply
+      .status(StatusCodes.OK)
+      .send({
+        user: newUser,
+      });
   } catch (err) {
-    console.error(err);
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
   }
-  return '';
 };
 
 const updateUser = async (req, reply) => {
+  const name = req.params.username;
   try {
-    const name = req.params.username;
     const res = await User.updateOne({ username: name }, req.body);
-    return res;
+    return reply
+      .status(StatusCodes.OK)
+      .send({
+        user: res,
+      });
   } catch (err) {
-    console.error(err);
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
   }
-  return '';
 };
 
 const deleteUser = async (req, reply) => {
+  const name = req.params.username;
   try {
-    const name = req.params.username;
     const res = await User.deleteOne({ username: name });
-    return ({ msg: `${name} account deleted!` });
+    return reply
+      .status(StatusCodes.OK)
+      .send({ msg: `${name} account deleted!` });
   } catch (err) {
-    console.error(err);
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
   }
-  return '';
 };
 
 export {

@@ -18,7 +18,9 @@ dbroutes.forEach((rte, index) => {
 });
 
 fastify.setNotFoundHandler((request, reply) => {
-  reply.send({ msg: 'Page Not Found!' });
+  reply
+    .code(404)
+    .send({ error: 'Page Not Found!' });
 });
 
 fastify.listen({ port: 3000 }, (err, address) => {

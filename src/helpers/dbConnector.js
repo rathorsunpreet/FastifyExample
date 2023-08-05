@@ -29,5 +29,3 @@ mongoose.connect('mongodb://127.0.0.1:27017/test')
     console.error('Error connecting to MongoDB');
     throw error;
   });
-
-export default mongoose;
