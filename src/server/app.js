@@ -2,11 +2,12 @@ import Fastify from 'fastify';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import pug from 'pug';
-import getDirName from './src/helpers/fsmethods.js';
-import dbroutes from './src/routes/dbroutes.js';
+import getDirName from '../helpers/fsmethods.js';
+import dbroutes from '../routes/dbroutes.js';
+import '../helpers/dbconnector.js';
 
 // Create fastify object with logger set to one-line-logger
-const fastify = Fastify({
+const app = Fastify({
   logger: {
     transport: {
       target: '@fastify/one-line-logger',
@@ -15,36 +16,34 @@ const fastify = Fastify({
 });
 
 // Register Pug with template root set to views folder
-fastify.register(fastifyView, {
+app.register(fastifyView, {
   engine: {
     pug,
   },
   root: getDirName('../../views'),
+  propertyName: 'render',
 });
 
 // Register @fastify/static with fastify
-fastify.register(fastifyStatic, {
-  root: getDirName('../../public');
+// Used to render images
+app.register(fastifyStatic, {
+  root: getDirName('../../public'),
 });
 
-fastify.get('/', (req, reply) => {
-  reply.send({ hello: 'world' });
+app.get('/', (req, reply) => {
+  // reply.send({ hello: 'world' });
+  reply.render('index');
 });
 
 dbroutes.forEach((rte, index) => {
-  fastify.route(rte);
+  app.route(rte);
 });
 
-// Set fastify's not found handler 
-fastify.setNotFoundHandler((request, reply) => {
+// Set fastify's not found handler
+app.setNotFoundHandler((request, reply) => {
   reply
     .code(404)
     .send({ error: 'Page Not Found!' });
 });
 
-fastify.listen({ port: 3000 }, (err, address) => {
-  if (err) {
-    fastify.log(err);
-    process.exit(1);
-  }
-});
+export default app;

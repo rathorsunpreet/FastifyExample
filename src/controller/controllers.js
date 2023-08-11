@@ -5,7 +5,6 @@ import {
   getStatusCode,
 } from 'http-status-codes';
 import User from '../schemas/users.js';
-import '../helpers/dbconnector.js';
 
 const getUser = async (req, reply) => {
   const usrname = req.params.username;
