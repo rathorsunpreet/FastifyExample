@@ -4,16 +4,29 @@ import {
   getReasonPhrase,
   getStatusCode,
 } from 'http-status-codes';
+import bcrypt from 'bcrypt';
 import User from '../schemas/users.js';
 
 const getUser = async (req, reply) => {
-  const usrname = req.params.username;
+  const { username, password } = req.body;
   try {
-    const res = await User.find({ username: usrname }).exec();
+    const res = await User.find({ username }).exec();
     if (res.length !== 0) {
-      return reply
-        .status(StatusCodes.OK)
-        .send(res);
+      const passwdHash = res.pswdhash;
+      try {
+        const check = await bcrypt.compare(password, passwdHash);
+        if (check) {
+          return reply
+            .status(StatusCodes.OK)
+            .send(res);
+        }
+      } catch (err) {
+        return reply
+          .status(StatusCodes.BAD_REQUEST)
+          .send({
+            error: getReasonPhrase(StatusCodes.BAD_REQUEST),
+          });
+      }
     }
   } catch (err) {
     return reply
