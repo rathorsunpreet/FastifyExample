@@ -45,6 +45,16 @@ const getUser = async (req, reply) => {
 const addUser = async (req, reply) => {
   const body = new User(req.body);
   try {
+    body.pswdhash = await bcrypt.hash(body.password, 10);
+  } catch (err) {
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
+  }
+  delete body.password;
+  try {
     const newUser = await body.save();
     return reply
       .status(StatusCodes.OK)
