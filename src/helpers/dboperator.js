@@ -2,7 +2,6 @@
 import JSON5 from 'json5';
 import {
   readFileSync,
-  writeFileSync,
 } from 'fs';
 import * as url from 'url';
 
@@ -16,15 +15,4 @@ try {
 }
 // console.log(dbData);
 
-function saveDB() {
-  try {
-    writeFileSync(dbPath, JSON5.stringify(dbData, null, 2), 'utf8');
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export {
-  dbData,
-  saveDB,
-};
+export default dbData;

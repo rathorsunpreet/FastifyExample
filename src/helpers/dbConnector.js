@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { dbData } from './dboperator.js';
+import dbData from './dboperator.js';
 import User from '../schemas/users.js';
 
 // Populate DB if collection count is zero

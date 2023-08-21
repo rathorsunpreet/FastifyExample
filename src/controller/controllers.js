@@ -7,7 +7,7 @@ import {
 import bcrypt from 'bcrypt';
 import User from '../schemas/users.js';
 
-const getUser = async (req, reply) => {
+const auth = async (req, reply) => {
   const { username, password } = req.body;
   try {
     const res = await User.find({ username }).exec();
@@ -18,7 +18,9 @@ const getUser = async (req, reply) => {
         if (check) {
           return reply
             .status(StatusCodes.OK)
-            .send(res);
+            .send({
+              msg: 'Valid User',
+            });
         }
       } catch (err) {
         return reply
@@ -27,6 +29,29 @@ const getUser = async (req, reply) => {
             error: getReasonPhrase(StatusCodes.BAD_REQUEST),
           });
       }
+    }
+  } catch (err) {
+    return reply
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({
+        error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+      });
+  }
+  return reply
+    .status(StatusCodes.NOT_FOUND)
+    .send({
+      error: getReasonPhrase(StatusCodes.NOT_FOUND),
+    });
+};
+
+const getUser = async (req, reply) => {
+  const { username } = req.params;
+  try {
+    const res = await User.find({ username }).exec();
+    if (res.length !== 0) {
+      return reply
+        .status(StatusCodes.OK)
+        .send(res);
     }
   } catch (err) {
     return reply
@@ -105,6 +130,7 @@ const deleteUser = async (req, reply) => {
 };
 
 export {
+  auth,
   getUser,
   addUser,
   updateUser,

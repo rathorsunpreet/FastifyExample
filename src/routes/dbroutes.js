@@ -2,6 +2,11 @@ import * as Controller from '../controller/controllers.js';
 
 const dbroutes = [
   {
+    method: 'POST',
+    url: '/auth',
+    handler: Controller.auth,
+  },
+  {
     method: 'GET',
     url: '/users/:username',
     handler: Controller.getUser,
